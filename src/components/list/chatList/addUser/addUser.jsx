@@ -4,7 +4,6 @@ import {
   arrayUnion,
   collection,
   doc,
-  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -16,25 +15,20 @@ import { useState } from "react";
 import { useUserStore } from "../../../../lib/userStore";
 
 const AddUser = () => {
-  const [user, setUser] = useState(null);
-
+  const [user, setUser] = useState([]);
   const { currentUser } = useUserStore();
-
   const handleSearch = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const username = formData.get("username");
-
     try {
-      const userRef = collection(db, "users");
-
-      const q = query(userRef, where("username", "==", username));
-
-      const querySnapShot = await getDocs(q);
-
-      if (!querySnapShot.empty) {
-        setUser(querySnapShot.docs[0].data());
-      }
+      const querySnapShot = await getDocs(collection(db, "users"));
+      querySnapShot.docs.map((item) => {
+        console.log(item.data());
+      });
+      // if (!querySnapShot.empty) {
+      //   setUser(querySnapShot.docs[0].data());
+      // }
     } catch (err) {
       console.log(err);
     }
@@ -43,15 +37,12 @@ const AddUser = () => {
   const handleAdd = async () => {
     const chatRef = collection(db, "chats");
     const userChatsRef = collection(db, "userchats");
-
     try {
       const newChatRef = doc(chatRef);
-
       await setDoc(newChatRef, {
         createdAt: serverTimestamp(),
         messages: [],
       });
-
       await updateDoc(doc(userChatsRef, user.id), {
         chats: arrayUnion({
           chatId: newChatRef.id,

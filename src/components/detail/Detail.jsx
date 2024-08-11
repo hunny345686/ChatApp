@@ -5,8 +5,14 @@ import { useUserStore } from "../../lib/userStore";
 import "./detail.css";
 
 const Detail = () => {
-  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock, resetChat } =
-    useChatStore();
+  const {
+    chatId,
+    user,
+    isCurrentUserBlocked,
+    isReceiverBlocked,
+    changeBlock,
+    resetChat,
+  } = useChatStore();
   const { currentUser } = useUserStore();
 
   const handleBlock = async () => {
@@ -26,7 +32,7 @@ const Detail = () => {
 
   const handleLogout = () => {
     auth.signOut();
-    resetChat()
+    resetChat();
   };
 
   return (
@@ -34,7 +40,7 @@ const Detail = () => {
       <div className="user">
         <img src={user?.avatar || "./avatar.png"} alt="" />
         <h2>{user?.username}</h2>
-        <p>Lorem ipsum dolor sit amet.</p>
+        <p>It does not matter how slowly you go as long as you do not stop.</p>
       </div>
       <div className="info">
         <div className="option">

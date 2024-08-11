@@ -12,12 +12,12 @@ import { db } from "../../lib/firebase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
 import upload from "../../lib/upload";
-// import { format } from "timeago.js";
 
 const Chat = () => {
   const [chat, setChat] = useState([]);
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [img, setImg] = useState({
     file: null,
     url: "",
@@ -35,6 +35,7 @@ const Chat = () => {
 
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", chatId), (res) => {
+      setIsLoading(false);
       setChat(res.data());
     });
 
@@ -109,7 +110,6 @@ const Chat = () => {
     }
   };
 
-  console.log(chat?.messages);
   return (
     <div className="chat">
       <div className="top">
@@ -117,7 +117,9 @@ const Chat = () => {
           <img src={user?.avatar || "./avatar.png"} alt="" />
           <div className="texts">
             <span>{user?.username}</span>
-            <p>Lorem ipsum dolor, sit amet.</p>
+            <p>
+              It does not matter how slowly you go as long as you do not stop.
+            </p>
           </div>
         </div>
         <div className="icons">
@@ -129,15 +131,21 @@ const Chat = () => {
       <div className="center">
         {chat?.messages?.map((message) => (
           <div
+            title={message.createdAt.toDate().toLocaleString()}
+            key={message?.createAt}
             className={
               message.senderId === currentUser?.id ? "message own" : "message"
             }
-            key={message?.createAt}
           >
             <div className="texts">
               {message.img && <img src={message.img} alt="" />}
               <p>{message.text}</p>
-              <span>{message.createdAt.toDate().toLocaleString()}</span>
+              <span>
+                {message.createdAt.toDate().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
             </div>
           </div>
         ))}
@@ -150,6 +158,7 @@ const Chat = () => {
         )}
         <div ref={endRef}></div>
       </div>
+
       <div className="bottom">
         <div className="icons">
           <label htmlFor="file">

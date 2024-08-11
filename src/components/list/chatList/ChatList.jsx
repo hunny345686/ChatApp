@@ -10,9 +10,10 @@ const ChatList = () => {
   const [chats, setChats] = useState([]);
   const [addMode, setAddMode] = useState(false);
   const [input, setInput] = useState("");
-
   const { currentUser } = useUserStore();
-  const { chatId, changeChat } = useChatStore();
+  const { changeChat } = useChatStore();
+  const [activeChat, setActiceChat] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const unSub = onSnapshot(
@@ -23,24 +24,32 @@ const ChatList = () => {
         const promises = items.map(async (item) => {
           const userDocRef = doc(db, "users", item.receiverId);
           const userDocSnap = await getDoc(userDocRef);
-
           const user = userDocSnap.data();
-
           return { ...item, user };
         });
 
         const chatData = await Promise.all(promises);
-
-        setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+        const uniqueChats = chatData.reduce((acc, current) => {
+          const x = acc.find((item) => item.user.email === current.user.email);
+          if (!x) {
+            return acc.concat([current]);
+          } else {
+            return acc;
+          }
+        }, []);
+        changeChat(uniqueChats[0].chatId, uniqueChats[0].user);
+        setActiceChat(uniqueChats[0].chatId);
+        setIsLoading(false);
+        setChats(uniqueChats.sort((a, b) => b.updatedAt - a.updatedAt));
       }
     );
-
     return () => {
       unSub();
     };
   }, [currentUser.id]);
 
   const handleSelect = async (chat) => {
+    setActiceChat(chat.chatId);
     const userChats = chats.map((item) => {
       const { user, ...rest } = item;
       return rest;
@@ -65,14 +74,20 @@ const ChatList = () => {
     c.user.username.toLowerCase().includes(input.toLowerCase())
   );
 
-  return (
+  if (isLoading)
+    return (
+      <div className="loaderContaine">
+        <span class="loader"></span>
+      </div>
+    );
+  return filteredChats ? (
     <div className="chatList">
       <div className="search">
         <div className="searchBar">
           <img src="./search.png" alt="" />
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search..."
             onChange={(e) => setInput(e.target.value)}
           />
         </div>
@@ -85,11 +100,11 @@ const ChatList = () => {
       </div>
       {filteredChats.map((chat) => (
         <div
-          className="item"
+          className={activeChat == chat.chatId ? "item active" : "item"}
           key={chat.chatId}
           onClick={() => handleSelect(chat)}
           style={{
-            backgroundColor: chat?.isSeen ? "transparent" : "#5183fe",
+            backgroundColor: chat?.isSeen ? "" : "#5183fe",
           }}
         >
           <img
@@ -113,6 +128,8 @@ const ChatList = () => {
 
       {addMode && <AddUser />}
     </div>
+  ) : (
+    <div>loaging...</div>
   );
 };
 

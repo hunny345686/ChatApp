@@ -23,22 +23,28 @@ const App = () => {
     };
   }, [fetchUserInfo]);
 
-  if (isLoading) return <div className="loading">Loading...</div>;
-
-  return (
-    <div className="container">
-      {currentUser ? (
-        <>
-          <List />
-          {chatId && <Chat />}
-          {chatId && <Detail />}
-        </>
-      ) : (
-        <Login />
-      )}
-      <Notification />
-    </div>
-  );
+  if (isLoading)
+    return (
+      <div className="loaderContaine">
+        <span class="loader"></span>
+      </div>
+    );
+  else {
+    return (
+      <div className="container">
+        {currentUser ? (
+          <>
+            <List />
+            {chatId && <Chat />}
+            {chatId && <Detail />}
+          </>
+        ) : (
+          <Login />
+        )}
+        <Notification />
+      </div>
+    );
+  }
 };
 
 export default App;

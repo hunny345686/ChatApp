@@ -36,9 +36,9 @@
         }
 
         p {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 300;
-          color: #a5a5a5;
+          color: #fff;
         }
       }
     }
@@ -56,62 +56,50 @@
   }
 
   .center {
-    padding: 20px;
-    flex: 1;
+    padding: 16px;
     overflow: scroll;
     display: flex;
     flex-direction: column;
     gap: 20px;
     scrollbar-width: none;
     .message {
-      max-width: 70%;
-      display: flex;
-      gap: 20px;
-
+      width: fit-content;
+      padding: 8px;
+      max-width: 60%;
+      background-color: #202c33;
+      border-radius: 4px;
       &.own {
         align-self: flex-end;
-
-        .texts {
-          p {
-            background-color: #5183fe;
-          }
-        }
+        background: #004d40;
       }
+    }
+
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .texts {
+      display: flex;
+      align-items: end;
+      gap: 8px;
 
       img {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
+        width: 100%;
+        height: 300px;
+        border-radius: 10px;
         object-fit: cover;
       }
-      .texts {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
 
-        img {
-          width: 100%;
-          height: 300px;
-          border-radius: 10px;
-          object-fit: cover;
-        }
-
-        p {
-          padding: 20px;
-          background-color: rgba(17, 25, 40, 0.3);
-          border-radius: 10px;
-        }
-
-        span {
-          font-size: 13px;
-        }
+      span {
+        font-size: 10px;
       }
     }
   }
 
   .bottom {
-    padding: 20px;
+    padding: 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -136,10 +124,9 @@
       border: none;
       outline: none;
       color: white;
-      padding: 20px;
-      border-radius: 10px;
+      padding: 12px;
+      border-radius: 4px;
       font-size: 16px;
-
       &:disabled {
         cursor: not-allowed;
       }
@@ -156,7 +143,7 @@
     }
 
     .sendButton {
-      background-color: #5183fe;
+      background-color: #004d40;
       color: white;
       padding: 10px 20px;
       border: none;
@@ -164,7 +151,7 @@
       cursor: pointer;
 
       &:disabled {
-        background-color: #5182feb4;
+        background-color: #004d40;
         cursor: not-allowed;
       }
     }
