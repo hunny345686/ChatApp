@@ -1,5 +1,6 @@
 import "./userInfo.css";
 import { useUserStore } from "../../../lib/userStore";
+import { IoIosMore } from "react-icons/io";
 
 const Userinfo = () => {
   const { currentUser } = useUserStore();
@@ -11,7 +12,7 @@ const Userinfo = () => {
         <h2>{currentUser.username}</h2>
       </div>
       <div className="icons">
-        <img src="./more.png" alt="" />
+        <IoIosMore />
       </div>
     </div>
   );

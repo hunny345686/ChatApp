@@ -12,16 +12,15 @@ import { db } from "../../lib/firebase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
 import upload from "../../lib/upload";
-
+import { MdCall, MdEmojiEmotions, MdOutlineMic } from "react-icons/md";
+import { GoPaperclip } from "react-icons/go";
+import { IoIosMore, IoIosVideocam } from "react-icons/io";
 const Chat = () => {
   const [chat, setChat] = useState([]);
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [img, setImg] = useState({
-    file: null,
-    url: "",
-  });
+  const [img, setImg] = useState({ file: null, url: "" });
 
   const { currentUser } = useUserStore();
   const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
@@ -38,7 +37,6 @@ const Chat = () => {
       setIsLoading(false);
       setChat(res.data());
     });
-
     return () => {
       unSub();
     };
@@ -51,21 +49,22 @@ const Chat = () => {
 
   const handleImg = (e) => {
     if (e.target.files[0]) {
+      const selectedFile = e.target.files[0];
       setImg({
-        file: e.target.files[0],
+        file: selectedFile,
         url: URL.createObjectURL(e.target.files[0]),
       });
     }
   };
 
   const handleSend = async () => {
+    console.log(img);
     if (text === "") return;
     let imgUrl = null;
     try {
       if (img.file) {
         imgUrl = await upload(img.file);
       }
-
       await updateDoc(doc(db, "chats", chatId), {
         messages: arrayUnion({
           senderId: currentUser.id,
@@ -76,7 +75,6 @@ const Chat = () => {
       });
 
       const userIDs = [currentUser.id, user.id];
-
       userIDs.forEach(async (id) => {
         const userChatsRef = doc(db, "userchats", id);
         const userChatsSnapshot = await getDoc(userChatsRef);
@@ -110,6 +108,12 @@ const Chat = () => {
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSend();
+    }
+  };
+
   return (
     <div className="chat">
       <div className="top">
@@ -123,9 +127,9 @@ const Chat = () => {
           </div>
         </div>
         <div className="icons">
-          <img src="./phone.png" alt="" />
-          <img src="./video.png" alt="" />
-          <img src="./info.png" alt="" />
+          <MdCall />
+          <IoIosVideocam />
+          <IoIosMore />
         </div>
       </div>
       <div className="center">
@@ -137,21 +141,24 @@ const Chat = () => {
               message.senderId === currentUser?.id ? "message own" : "message"
             }
           >
-            <div className="texts">
-              {message.img && <img src={message.img} alt="" />}
-              <p>{message.text}</p>
-              <span>
-                {message.createdAt.toDate().toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
+            {message.img && <img src={message.img} alt="" />}
+            <div className="msgbox">
+              <div className="texts">
+                <p>{message.text}</p>
+                <span>
+                  {message.createdAt.toDate().toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+                {message.senderId === currentUser?.id ? <span>✓✓</span> : null}
+              </div>
             </div>
           </div>
         ))}
         {img.url && (
-          <div className="message own">
-            <div className="texts">
+          <div className="img-container">
+            <div className="img-box">
               <img src={img.url} alt="" />
             </div>
           </div>
@@ -160,19 +167,6 @@ const Chat = () => {
       </div>
 
       <div className="bottom">
-        <div className="icons">
-          <label htmlFor="file">
-            <img src="./img.png" alt="" />
-          </label>
-          <input
-            type="file"
-            id="file"
-            style={{ display: "none" }}
-            onChange={handleImg}
-          />
-          <img src="./camera.png" alt="" />
-          <img src="./mic.png" alt="" />
-        </div>
         <input
           type="text"
           placeholder={
@@ -180,27 +174,29 @@ const Chat = () => {
               ? "You cannot send a message"
               : "Type a message..."
           }
+          onKeyPress={handleKeyPress}
           value={text}
           onChange={(e) => setText(e.target.value)}
           disabled={isCurrentUserBlocked || isReceiverBlocked}
         />
-        <div className="emoji">
-          <img
-            src="./emoji.png"
-            alt=""
-            onClick={() => setOpen((prev) => !prev)}
+        <div className="icons">
+          <label htmlFor="file">
+            <GoPaperclip />
+          </label>
+          <input
+            type="file"
+            id="file"
+            style={{ display: "none" }}
+            onChange={handleImg}
           />
-          <div className="picker">
-            <EmojiPicker open={open} onEmojiClick={handleEmoji} />
+          <MdOutlineMic />
+          <div className="emoji">
+            <MdEmojiEmotions onClick={() => setOpen((prev) => !prev)} />
+            <div className="picker">
+              <EmojiPicker open={open} onEmojiClick={handleEmoji} />
+            </div>
           </div>
         </div>
-        <button
-          className="sendButton"
-          onClick={handleSend}
-          disabled={isCurrentUserBlocked || isReceiverBlocked}
-        >
-          Send
-        </button>
       </div>
     </div>
   );

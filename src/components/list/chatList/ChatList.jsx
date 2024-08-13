@@ -5,6 +5,7 @@ import { useUserStore } from "../../../lib/userStore";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 import { useChatStore } from "../../../lib/chatStore";
+import { IoIosSearch } from "react-icons/io";
 
 const ChatList = () => {
   const [chats, setChats] = useState([]);
@@ -84,7 +85,7 @@ const ChatList = () => {
     <div className="chatList">
       <div className="search">
         <div className="searchBar">
-          <img src="./search.png" alt="" />
+          <IoIosSearch />
           <input
             type="text"
             placeholder="Search..."
@@ -125,7 +126,6 @@ const ChatList = () => {
           </div>
         </div>
       ))}
-
       {addMode && <AddUser />}
     </div>
   ) : (

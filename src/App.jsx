@@ -33,11 +33,11 @@ const App = () => {
     return (
       <div className="container">
         {currentUser ? (
-          <>
+          <div className="chatContainer">
             <List />
             {chatId && <Chat />}
-            {chatId && <Detail />}
-          </>
+            {/* {chatId && <Detail />} */}
+          </div>
         ) : (
           <Login />
         )}

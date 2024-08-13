@@ -1,8 +1,11 @@
 .userInfo {
-  padding: 20px;
+  padding: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  h2 {
+    font-size: 18px;
+  }
 
   .user {
     display: flex;
@@ -20,10 +23,7 @@
   .icons {
     display: flex;
     gap: 20px;
-
-    img {
-      width: 20px;
-      height: 20px;
+    svg {
       cursor: pointer;
     }
   }
