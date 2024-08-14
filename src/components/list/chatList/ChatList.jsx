@@ -38,8 +38,8 @@ const ChatList = () => {
             return acc;
           }
         }, []);
-        changeChat(uniqueChats[0].chatId, uniqueChats[0].user);
-        setActiceChat(uniqueChats[0].chatId);
+        // changeChat(uniqueChats[0].chatId, uniqueChats[0].user);
+        // setActiceChat(uniqueChats[0].chatId);
         setIsLoading(false);
         setChats(uniqueChats.sort((a, b) => b.updatedAt - a.updatedAt));
       }
@@ -78,7 +78,7 @@ const ChatList = () => {
   if (isLoading)
     return (
       <div className="loaderContaine">
-        <span class="loader"></span>
+        <span className="loader"></span>
       </div>
     );
   return filteredChats ? (
@@ -99,6 +99,7 @@ const ChatList = () => {
           onClick={() => setAddMode((prev) => !prev)}
         />
       </div>
+      <p className="contact-heading">Contacts</p>
       {filteredChats.map((chat) => (
         <div
           className={activeChat == chat.chatId ? "item active" : "item"}
@@ -126,7 +127,8 @@ const ChatList = () => {
           </div>
         </div>
       ))}
-      {addMode && <AddUser />}
+      <p className="contact-heading">Add New Contact</p>
+      <AddUser />
     </div>
   ) : (
     <div>loaging...</div>
