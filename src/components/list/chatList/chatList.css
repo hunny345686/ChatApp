@@ -43,12 +43,17 @@
       cursor: pointer;
     }
   }
+  .contact-heading {
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 500;
+  }
 
   .item {
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 16px;
+    padding: 10px;
     cursor: pointer;
     border-bottom: 1px solid #dddddd35;
     border-radius: 4px;
@@ -56,13 +61,13 @@
       background: #00796b;
       .texts {
         span {
-          font-weight: 700;
+          font-weight: 500;
         }
       }
     }
     img {
-      width: 50px;
-      height: 50px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       object-fit: cover;
     }

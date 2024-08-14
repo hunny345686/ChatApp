@@ -26,7 +26,7 @@ const App = () => {
   if (isLoading)
     return (
       <div className="loaderContaine">
-        <span class="loader"></span>
+        <span className="loader"></span>
       </div>
     );
   else {

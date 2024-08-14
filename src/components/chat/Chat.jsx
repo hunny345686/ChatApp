@@ -135,8 +135,8 @@ const Chat = () => {
       <div className="center">
         {chat?.messages?.map((message) => (
           <div
+            key={message?.createdAt}
             title={message.createdAt.toDate().toLocaleString()}
-            key={message?.createAt}
             className={
               message.senderId === currentUser?.id ? "message own" : "message"
             }
