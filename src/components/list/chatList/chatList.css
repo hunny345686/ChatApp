@@ -1,21 +1,23 @@
 .chatList {
-  flex: 1;
   overflow: scroll;
   scrollbar-width: none;
+  padding: 10px;
   .search {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 16px;
-
+    padding-bottom: 10px;
     .searchBar {
-      flex: 1;
       background-color: rgba(17, 25, 40, 0.5);
       display: flex;
       align-items: center;
       gap: 8px;
-      border-radius: 10px;
-      padding: 10px;
+      border-radius: 4px;
+      padding: 8px;
+      svg {
+        color: #fff;
+        width: 24px;
+        height: 24px;
+      }
 
       input {
         background-color: transparent;
@@ -26,11 +28,6 @@
         &::placeholder {
           color: white;
         }
-      }
-
-      img {
-        width: 20px;
-        height: 20px;
       }
     }
 
@@ -44,23 +41,26 @@
     }
   }
   .contact-heading {
-    padding: 16px;
-    font-size: 18px;
+    padding: 10px;
+    font-size: 16px;
     font-weight: 500;
+    color: #fff;
+    border-bottom: 2px solid #ffffff42;
   }
 
   .item {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 10px;
+    gap: 16px;
+    padding: 8px;
     cursor: pointer;
-    border-bottom: 1px solid #dddddd35;
-    border-radius: 4px;
+    border-radius: 8px;
+    margin-top: 8px;
     &.active {
       background: #00796b;
       .texts {
         span {
+          font-size: 14px;
           font-weight: 500;
         }
       }
@@ -75,15 +75,42 @@
     .texts {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 3px;
       span {
         font-weight: 500;
+        font-size: 14px;
+        color: #fff;
       }
 
       p {
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 300;
         color: #b2dfdb;
+      }
+    }
+  }
+  .searchBar.newUser {
+    background-color: rgba(17, 25, 40, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    padding: 8px;
+    margin-top: 24px;
+    svg {
+      color: #fff;
+      width: 24px;
+      height: 24px;
+    }
+
+    input {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      flex: 1;
+      &::placeholder {
+        color: white;
       }
     }
   }

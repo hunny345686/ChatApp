@@ -21,7 +21,6 @@ const ChatList = () => {
       doc(db, "userchats", currentUser.id),
       async (res) => {
         const items = res.data().chats;
-
         const promises = items.map(async (item) => {
           const userDocRef = doc(db, "users", item.receiverId);
           const userDocSnap = await getDoc(userDocRef);
@@ -75,12 +74,6 @@ const ChatList = () => {
     c.user.username.toLowerCase().includes(input.toLowerCase())
   );
 
-  if (isLoading)
-    return (
-      <div className="loaderContaine">
-        <span className="loader"></span>
-      </div>
-    );
   return filteredChats ? (
     <div className="chatList">
       <div className="search">
@@ -88,7 +81,7 @@ const ChatList = () => {
           <IoIosSearch />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Your Contact ..."
             onChange={(e) => setInput(e.target.value)}
           />
         </div>
@@ -127,8 +120,16 @@ const ChatList = () => {
           </div>
         </div>
       ))}
+      <div className="searchBar newUser">
+        <IoIosSearch />
+        <input
+          type="text"
+          placeholder="New Contact ..."
+          onChange={(e) => setInput(e.target.value)}
+        />
+      </div>
       <p className="contact-heading">Add New Contact</p>
-      <AddUser />
+      {/* <AddUser /> */}
     </div>
   ) : (
     <div>loaging...</div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./login.css";
 import { toast } from "react-toastify";
 import {
@@ -8,6 +8,7 @@ import {
 import { auth, db } from "../../lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import upload from "../../lib/upload";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [avatar, setAvatar] = useState({
@@ -16,6 +17,7 @@ const Login = () => {
   });
   const [loading, setLoading] = useState(false);
   const [toggel, setToggel] = useState(true);
+  const [showPassword, setshowPassword] = useState(false);
 
   const handleAvatar = (e) => {
     if (e.target.files[0]) {
@@ -30,9 +32,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.target);
-
     const { username, email, password } = Object.fromEntries(formData);
-
     // VALIDATE INPUTS
     if (!username || !email || !password) {
       setLoading(false);
@@ -67,7 +67,6 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     const formData = new FormData(e.target);
     const { email, password } = Object.fromEntries(formData);
 
@@ -81,24 +80,47 @@ const Login = () => {
     }
   };
 
+  const handleToggle = () => {
+    setToggel(!toggel);
+  };
+
   return (
-    <div className="login">
+    <div className="chitChat-login">
       {toggel ? (
-        <div className="item">
-          <h2>Welcome back,</h2>
+        <div className={`chitChat-item ${toggel ? "slide-right" : ""}`}>
+          <h2>
+            Welcome back to <br /> <strong>ChitChat, </strong>
+          </h2>
           <form onSubmit={handleLogin}>
-            <input type="text" placeholder="Email" name="email" />
-            <input type="password" placeholder="Password" name="password" />
-            <button disabled={loading}>
+            <input
+              autoComplete="off"
+              type="text"
+              placeholder="Email"
+              name="email"
+            />
+            <div className="chitChat-password-container">
+              <input
+                autoComplete="off"
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                name="password"
+              />
+              {showPassword ? (
+                <FaEye onClick={() => setshowPassword(false)} />
+              ) : (
+                <FaEyeSlash onClick={() => setshowPassword(true)} />
+              )}
+            </div>
+            <button disabled={loading} className="chitChat-primery-btn">
               {loading ? "Loading" : "Sign In"}
             </button>
-            <p className="singInOrUp">
-              New User <span onClick={() => setToggel(false)}>Click Here</span>
+            <p className="chitChat-new-user">
+              New User <span onClick={handleToggle}>Click Here</span>
             </p>
           </form>
         </div>
       ) : (
-        <div className="item">
+        <div className="chitChat-item chitChat-item-registration-container slide-right">
           <h2>Create an Account</h2>
           <form onSubmit={handleRegister}>
             <label htmlFor="file">
@@ -113,13 +135,24 @@ const Login = () => {
             />
             <input type="text" placeholder="Your Name..." name="username" />
             <input type="text" placeholder="Email" name="email" />
-            <input type="password" placeholder="Password" name="password" />
-            <button disabled={loading}>
+            <div className="chitChat-password-container">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                name="password"
+              />
+              {showPassword ? (
+                <FaEye onClick={() => setshowPassword(false)} />
+              ) : (
+                <FaEyeSlash onClick={() => setshowPassword(true)} />
+              )}
+            </div>
+            <button disabled={loading} className="chitChat-primery-btn">
               {loading ? "Loading" : "Register Now"}
             </button>
-            <p className="singInOrUp">
-              Allready User{" "}
-              <span onClick={() => setToggel(true)}>Click Here</span>
+            <p className="chitChat-new-user">
+              Allready User
+              <span onClick={handleToggle}> Click Here</span>
             </p>
           </form>
         </div>

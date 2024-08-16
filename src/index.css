@@ -6,27 +6,103 @@
   font-family: "Inter", sans-serif;
 }
 
+/* ++++++++++++++++++++++ CSS Thems And Veriables +++++++++++++++++++ */
+/* soft-and-professional */
+:root {
+  --bgColor: #f0f4f8; /* Soft Blue-Gray */
+  --textColor: #2c3e50; /* Deep Slate */
+  --borderColor: #bdc3c7; /* Light Slate */
+  --color: #2980b9; /* Bold Blue */
+  --btnColor: #3498db; /* Vivid Sky Blue */
+}
+
+/* 2. Warm and Inviting */
+body.warm-and-inviting {
+  :root {
+    --bgColor: #fff7e6; /* Light Cream */
+    --textColor: #6b4226; /* Rich Brown */
+    --borderColor: #e3c1a0; /* Soft Beige */
+    --color: #d35400; /* Warm Orange */
+    --btnColor: #e67e22; /* Vibrant Orange */
+  }
+}
+body.modern-and-minimal {
+  /*  Modern and Minimal */
+  :root {
+    --bgColor: #ffffff; /* Pure White */
+    --textColor: #4a4a4a; /* Charcoal */
+    --borderColor: #e0e0e0; /* Light Gray */
+    --color: #16a085; /* Sea Green */
+    --btnColor: #1abc9c; /* Aqua Green */
+  }
+}
+
+body.cool-and-calm {
+  /* Cool and Calm */
+  :root {
+    --bgColor: #e8f8f5; /* Light Aqua */
+    --textColor: #2c3e50; /* Slate Gray */
+    --borderColor: #a3d2ca; /* Soft Teal */
+    --color: #1f618d; /* Deep Blue */
+    --btnColor: #2980b9; /* Bold Blue */
+  }
+}
+body.vibrant-and-energetic {
+  /* Vibrant and Energetic */
+  :root {
+    --bgColor: #fff5f7; /* Light Pink */
+    --textColor: #8e44ad; /* Dark Purple */
+    --borderColor: #dcdde1; /* Soft Lavender */
+    --color: #e74c3c; /* Bright Red */
+    --btnColor: #e84393; /* Hot Pink */
+  }
+}
+body.dark-and-elegant {
+  :root {
+    --bgColor: #2c3e50;
+    --textColor: #ecf0f1; /* Light Silver */
+    --borderColor: #34495e; /* Dark Slate */
+    --color: #c0392b; /* Rich Red */
+    --btnColor: #e74c3c; /* Crimson Red */
+  }
+}
+
+/* bg Icons Sheking Animation  */
+
 body {
-  background: #00796b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+  background: var(--bgColor);
+}
+
+#root {
   height: 100vh;
+  display: grid;
+  place-content: center;
 }
 
-.container {
-  border-radius: 12px;
-  backdrop-filter: blur(30px);
-  background-color: #ffffff38;
-  box-shadow: 0px 0px 7px 0px #ffffffa8;
-  margin: 4%;
+ul {
+  list-style: none;
 }
 
-.chatContainer {
-  display: flex;
-  max-width: 1024px;
-  height: 600px;
+.chitChat-container {
+  width: 770px;
+  height: 530px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.2); /* Light transparent background */
+  backdrop-filter: blur(10px) saturate(150%);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* +++++++++++++++++++++++++++ Reusable Code +++++++++++++++++++++++++++++++++++++++*/
+
+.chitChat-primery-btn {
+  padding: 16px 8px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #3498db;
+  color: #fff;
+  cursor: pointer;
 }
 
 .loaderContaine {
@@ -82,4 +158,22 @@ body {
   80% {
     transform: scale(1.2);
   }
+}
+
+.slide-right {
+  animation: slideRight 2s forwards;
+}
+@keyframes slideRight {
+  from {
+    transform: translateX(-200%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* +++++++++++++++++++++++ App Component CSS +++++++++++++++++++++++++++ */
+.chat-user-containe {
+  display: flex;
+  height: 100%;
 }
