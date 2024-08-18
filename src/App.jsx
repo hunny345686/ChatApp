@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import Chat from "./components/chat/Chat";
-import Detail from "./components/detail/Detail";
 import Login from "./components/login/Login";
 import Notification from "./components/notification/Notification";
 import { onAuthStateChanged } from "firebase/auth";
@@ -43,7 +42,6 @@ const App = () => {
                 <ChatList />
               </div>
               {chatId && <Chat />}
-              {/* {chatId && <Detail />} */}
             </div>
           ) : (
             <Login />
