@@ -58,7 +58,6 @@ const Chat = () => {
   };
 
   const handleSend = async () => {
-    console.log(img);
     if (text === "") return;
     let imgUrl = null;
     try {
