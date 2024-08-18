@@ -36,8 +36,9 @@ const ChatList = () => {
             return acc;
           }
         }, []);
-        // changeChat(uniqueChats[0].chatId, uniqueChats[0].user);
-        // setActiceChat(uniqueChats[0].chatId);
+        console.log(uniqueChats);
+        changeChat(uniqueChats[0].chatId, uniqueChats[0].user);
+        setActiceChat(uniqueChats[0].chatId);
         setIsLoading(false);
         setChats(uniqueChats.sort((a, b) => b.updatedAt - a.updatedAt));
       }
