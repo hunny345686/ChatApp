@@ -7,6 +7,7 @@ import {
   getDoc,
   onSnapshot,
   updateDoc,
+  arrayRemove,
 } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { useChatStore } from "../../lib/chatStore";
@@ -15,17 +16,18 @@ import upload from "../../lib/upload";
 import { MdCall, MdEmojiEmotions, MdOutlineMic } from "react-icons/md";
 import { GoPaperclip } from "react-icons/go";
 import { IoIosMore, IoIosVideocam } from "react-icons/io";
+import useClickOutside from "../../customHooks/useClickOutside";
 const Chat = () => {
   const [chat, setChat] = useState([]);
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [img, setImg] = useState({ file: null, url: "" });
-
+  const [toggel, setToggel] = useState(false);
   const { currentUser } = useUserStore();
-  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
+  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock } =
     useChatStore();
-
+  const popupRef = useRef(null);
   const endRef = useRef(null);
 
   useEffect(() => {
@@ -112,6 +114,30 @@ const Chat = () => {
       handleSend();
     }
   };
+  const toggleDropdown = () => {
+    setToggel(!toggel);
+  };
+
+  const closeDropdown = () => {
+    setToggel(false);
+  };
+
+  useClickOutside(popupRef, closeDropdown);
+
+  const handleBlock = async () => {
+    if (!user) return;
+
+    const userDocRef = doc(db, "users", currentUser.id);
+
+    try {
+      await updateDoc(userDocRef, {
+        blocked: isReceiverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
+      });
+      changeBlock();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="chat">
@@ -128,7 +154,24 @@ const Chat = () => {
         <div className="icons">
           <MdCall />
           <IoIosVideocam />
-          <IoIosMore />
+          <div className="iconsmore">
+            <IoIosMore onClick={toggleDropdown} />
+            {toggel && (
+              <div ref={popupRef} className="user-profil-dropdown">
+                <ul>
+                  <li>Profile</li>
+                  <li>setting</li>
+                  <li onClick={handleBlock}>
+                    {isCurrentUserBlocked
+                      ? "You are Blocked!"
+                      : isReceiverBlocked
+                      ? "User blocked"
+                      : "Block User"}
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div className="center">
