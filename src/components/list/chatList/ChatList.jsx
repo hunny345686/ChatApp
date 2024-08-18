@@ -9,7 +9,6 @@ import { IoIosSearch } from "react-icons/io";
 
 const ChatList = () => {
   const [chats, setChats] = useState([]);
-  const [addMode, setAddMode] = useState(false);
   const [input, setInput] = useState("");
   const { currentUser } = useUserStore();
   const { changeChat } = useChatStore();
@@ -85,12 +84,6 @@ const ChatList = () => {
             onChange={(e) => setInput(e.target.value)}
           />
         </div>
-        <img
-          src={addMode ? "./minus.png" : "./plus.png"}
-          alt=""
-          className="add"
-          onClick={() => setAddMode((prev) => !prev)}
-        />
       </div>
       <p className="contact-heading">Contacts</p>
       {filteredChats.map((chat) => (
@@ -120,20 +113,9 @@ const ChatList = () => {
           </div>
         </div>
       ))}
-      <div className="searchBar newUser">
-        <IoIosSearch />
-        <input
-          type="text"
-          placeholder="New Contact ..."
-          onChange={(e) => setInput(e.target.value)}
-        />
-      </div>
-      <p className="contact-heading">Add New Contact</p>
-      {/* <AddUser /> */}
+      <AddUser />
     </div>
-  ) : (
-    <div>loaging...</div>
-  );
+  ) : null;
 };
 
 export default ChatList;
