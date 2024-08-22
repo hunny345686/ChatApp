@@ -77,8 +77,6 @@ const Chat = () => {
       });
 
       const userIDs = [currentUser.id, user.id];
-      console.log("currentUser.id", currentUser);
-      console.log("user", user);
       userIDs.forEach(async (id) => {
         const userChatsRef = doc(db, "userchats", id);
         const userChatsSnapshot = await getDoc(userChatsRef);
