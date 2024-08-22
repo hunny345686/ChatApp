@@ -26,7 +26,8 @@ const App = () => {
 
   if (isLoading)
     return (
-      <div className="loaderContaine">
+      <div className="loaderContained">
+        <Bg />
         <span className="loader"></span>
       </div>
     );
@@ -41,7 +42,14 @@ const App = () => {
                 <Userinfo />
                 <ChatList />
               </div>
-              {chatId && <Chat />}
+              {chatId ? (
+                <Chat />
+              ) : (
+                <div className="add-new-user-container-righ">
+                  <img src="./public/addnewUser.png" alt="addnewUser" />
+                  <h3>Please Add user...</h3>
+                </div>
+              )}
             </div>
           ) : (
             <Login />

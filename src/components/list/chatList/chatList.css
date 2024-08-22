@@ -3,20 +3,17 @@
   scrollbar-width: none;
   padding: 10px;
   .search {
-    display: flex;
-    align-items: center;
-    padding-bottom: 10px;
     .searchBar {
       background-color: rgba(17, 25, 40, 0.5);
       display: flex;
       align-items: center;
       gap: 8px;
       border-radius: 4px;
-      padding: 8px;
+      padding: 4px;
       svg {
         color: #fff;
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
       }
 
       input {
@@ -25,6 +22,7 @@
         outline: none;
         color: white;
         flex: 1;
+        font-size: 12px;
         &::placeholder {
           color: white;
         }
@@ -42,34 +40,37 @@
   }
   .contact-heading {
     padding: 10px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     color: #fff;
-    border-bottom: 2px solid #ffffff42;
+    border-bottom: 1px solid #ffffff42;
   }
 
   .item {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 8px;
+    gap: 12px;
+    padding: 4px;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 4px;
     margin-top: 8px;
     &.active {
       background: #00796b;
       .texts {
         span {
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 500;
         }
       }
     }
     img {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      aspect-ratio: 1;
       border-radius: 50%;
       object-fit: cover;
+    }
+    img.seen {
+      border: 3px solid red;
     }
 
     .texts {
@@ -78,7 +79,7 @@
       gap: 3px;
       span {
         font-weight: 500;
-        font-size: 14px;
+        font-size: 13px;
         color: #fff;
       }
 
@@ -86,6 +87,7 @@
         font-size: 12px;
         font-weight: 300;
         color: #b2dfdb;
+        word-break: break-all;
       }
     }
   }
@@ -95,12 +97,11 @@
     align-items: center;
     gap: 8px;
     border-radius: 4px;
-    padding: 8px;
-    margin-top: 24px;
+    padding: 4px;
     svg {
       color: #fff;
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
     }
 
     input {
@@ -109,6 +110,7 @@
       outline: none;
       color: white;
       flex: 1;
+      font-size: 12px;
       &::placeholder {
         color: white;
       }
