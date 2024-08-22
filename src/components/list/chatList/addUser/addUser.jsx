@@ -12,9 +12,9 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useUserStore } from "../../../../lib/userStore";
-import { IoIosSearch } from "react-icons/io";
 
 const AddUser = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const { currentUser } = useUserStore();
   useEffect(() => {
@@ -47,6 +47,7 @@ const AddUser = () => {
     handleSearch();
   }, [user]);
   const handleAdd = async (userID) => {
+    setIsLoading(true);
     const chatRef = collection(db, "chats");
     const userChatsRef = collection(db, "userchats");
 
@@ -74,29 +75,24 @@ const AddUser = () => {
           updatedAt: Date.now(),
         }),
       });
-      console.log({ Added: userID, currUser: currentUser.id });
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  return (
-    <>
-      {user?.length > 0 ? (
-        <>
-          <div className="searchBar newUser">
-            <IoIosSearch />
-            <input
-              type="text"
-              placeholder="New Contact ..."
-              onChange={(e) => setInput(e.target.value)}
-            />
-          </div>
-          <p className="contact-heading">Others Users</p>
-        </>
-      ) : null}
-      {user?.length > 0
-        ? user.map((user) => (
+  if (isLoading)
+    return (
+      <div className="loaderContainer">
+        <span className="loader"></span>
+      </div>
+    );
+  else {
+    return (
+      <>
+        {user?.length > 0 && <p className="contact-heading">Others Users</p>}
+        {user?.length > 0 &&
+          user.map((user) => (
             <div
               key={user.id}
               className="new-user"
@@ -105,10 +101,9 @@ const AddUser = () => {
               <img src={user.avatar || "./avatar.png"} alt="" />
               <span>{user.username}</span>
             </div>
-          ))
-        : null}
-    </>
-  );
+          ))}
+      </>
+    );
+  }
 };
-
 export default AddUser;

@@ -38,7 +38,6 @@ const ChatList = () => {
         }, []);
         changeChat(uniqueChats[0].chatId, uniqueChats[0].user);
         setActiceChat(uniqueChats[0].chatId);
-        setIsLoading(false);
         setChats(uniqueChats.sort((a, b) => b.updatedAt - a.updatedAt));
       }
     );
@@ -49,6 +48,7 @@ const ChatList = () => {
 
   const handleSelect = async (chat) => {
     setIsLoading(true);
+    console.log(isLoading);
     setActiceChat(chat.chatId);
     const userChats = chats.map((item) => {
       const { user, ...rest } = item;
@@ -64,58 +64,69 @@ const ChatList = () => {
         chats: userChats,
       });
       changeChat(chat.chatId, chat.user);
-      setIsLoading(false);
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
   const filteredChats = chats.filter((c) =>
     c.user.username.toLowerCase().includes(input.toLowerCase())
   );
 
-  return (
-    <div className="chatList">
-      {filteredChats.length > 0 ? (
-        <div className="search">
-          <div className="searchBar">
-            <IoIosSearch />
-            <input
-              type="text"
-              placeholder="Your Contact ..."
-              onChange={(e) => setInput(e.target.value)}
-            />
-          </div>
-          <p className="contact-heading">Chats</p>
+  {
+    if (isLoading)
+      return (
+        <div className="loaderContainer">
+          <span className="loader"></span>
         </div>
-      ) : null}
-      {filteredChats.map((chat) => (
-        <div
-          className={activeChat == chat.chatId ? "item active" : "item"}
-          key={chat.chatId}
-          onClick={() => handleSelect(chat)}
-        >
-          <img
-            className={chat?.isSeen ? "" : "seen"}
-            src={
-              chat.user.blocked.includes(currentUser.id)
-                ? "./avatar.png"
-                : chat.user.avatar || "./avatar.png"
-            }
-            alt=""
-          />
-          <div className="texts">
-            <span>
-              {chat.user.blocked.includes(currentUser.id)
-                ? "User"
-                : chat.user.username}
-            </span>
-            <p>{chat.lastMessage.substring(0, 40) + "..."}</p>
-          </div>
+      );
+    else {
+      return (
+        <div className="chatList">
+          {filteredChats.length > 0 ? (
+            <div className="search">
+              <div className="searchBar">
+                <IoIosSearch />
+                <input
+                  type="text"
+                  placeholder="Your Contact ..."
+                  onChange={(e) => setInput(e.target.value)}
+                />
+              </div>
+              <p className="contact-heading">Chats</p>
+            </div>
+          ) : null}
+          {filteredChats.map((chat) => (
+            <div
+              className={activeChat == chat.chatId ? "item active" : "item"}
+              key={chat.chatId}
+              onClick={() => handleSelect(chat)}
+            >
+              <img
+                className={chat?.isSeen ? "" : "seen"}
+                src={
+                  chat.user.blocked.includes(currentUser.id)
+                    ? "./avatar.png"
+                    : chat.user.avatar || "./avatar.png"
+                }
+                alt=""
+              />
+              <div className="texts">
+                <span>
+                  {chat.user.blocked.includes(currentUser.id)
+                    ? "User"
+                    : chat.user.username}
+                </span>
+                <p>{chat.lastMessage.substring(0, 40) + "..."}</p>
+              </div>
+            </div>
+          ))}
+          <AddUser />
         </div>
-      ))}
-      <AddUser />
-    </div>
-  );
+      );
+    }
+  }
 };
 // };
 
