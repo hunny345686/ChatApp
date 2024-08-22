@@ -13,7 +13,7 @@ const ChatList = () => {
   const { currentUser } = useUserStore();
   const { changeChat } = useChatStore();
   const [activeChat, setActiceChat] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const unSub = onSnapshot(
@@ -36,7 +36,6 @@ const ChatList = () => {
             return acc;
           }
         }, []);
-        console.log(uniqueChats);
         changeChat(uniqueChats[0].chatId, uniqueChats[0].user);
         setActiceChat(uniqueChats[0].chatId);
         setIsLoading(false);
@@ -49,12 +48,12 @@ const ChatList = () => {
   }, [currentUser.id]);
 
   const handleSelect = async (chat) => {
+    setIsLoading(true);
     setActiceChat(chat.chatId);
     const userChats = chats.map((item) => {
       const { user, ...rest } = item;
       return rest;
     });
-
     const chatIndex = userChats.findIndex(
       (item) => item.chatId === chat.chatId
     );
@@ -65,38 +64,38 @@ const ChatList = () => {
         chats: userChats,
       });
       changeChat(chat.chatId, chat.user);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
     }
   };
-
   const filteredChats = chats.filter((c) =>
     c.user.username.toLowerCase().includes(input.toLowerCase())
   );
 
-  return filteredChats ? (
+  return (
     <div className="chatList">
-      <div className="search">
-        <div className="searchBar">
-          <IoIosSearch />
-          <input
-            type="text"
-            placeholder="Your Contact ..."
-            onChange={(e) => setInput(e.target.value)}
-          />
+      {filteredChats.length > 0 ? (
+        <div className="search">
+          <div className="searchBar">
+            <IoIosSearch />
+            <input
+              type="text"
+              placeholder="Your Contact ..."
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+          <p className="contact-heading">Chats</p>
         </div>
-      </div>
-      <p className="contact-heading">Contacts</p>
+      ) : null}
       {filteredChats.map((chat) => (
         <div
           className={activeChat == chat.chatId ? "item active" : "item"}
           key={chat.chatId}
           onClick={() => handleSelect(chat)}
-          style={{
-            backgroundColor: chat?.isSeen ? "" : "#5183fe",
-          }}
         >
           <img
+            className={chat?.isSeen ? "" : "seen"}
             src={
               chat.user.blocked.includes(currentUser.id)
                 ? "./avatar.png"
@@ -110,13 +109,14 @@ const ChatList = () => {
                 ? "User"
                 : chat.user.username}
             </span>
-            <p>{chat.lastMessage}</p>
+            <p>{chat.lastMessage.substring(0, 40) + "..."}</p>
           </div>
         </div>
       ))}
       <AddUser />
     </div>
-  ) : null;
+  );
 };
+// };
 
 export default ChatList;

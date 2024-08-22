@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./login.css";
 import { toast } from "react-toastify";
 import {
@@ -41,9 +41,7 @@ const Login = () => {
     if (!avatar.file) return toast.warn("Please upload an avatar!");
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
-
       const imgUrl = await upload(avatar.file);
-
       await setDoc(doc(db, "users", res.user.uid), {
         username,
         email,
@@ -54,13 +52,11 @@ const Login = () => {
       await setDoc(doc(db, "userchats", res.user.uid), {
         chats: [],
       });
-
       toast.success("Account created! You can login now!");
-    } catch (err) {
-      console.log(err);
-      toast.error(err.message);
-    } finally {
       setLoading(false);
+    } catch (err) {
+      toast.error(err.message);
+      console.log(err);
     }
   };
 
@@ -69,17 +65,14 @@ const Login = () => {
     setLoading(true);
     const formData = new FormData(e.target);
     const { email, password } = Object.fromEntries(formData);
-
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      setLoading(false);
     } catch (err) {
       console.log(err);
       toast.error(err.message);
-    } finally {
-      setLoading(false);
     }
   };
-
   const handleToggle = () => {
     setToggel(!toggel);
   };
@@ -112,7 +105,7 @@ const Login = () => {
               )}
             </div>
             <button disabled={loading} className="chitChat-primery-btn">
-              {loading ? "Loading" : "Sign In"}
+              {loading ? "Loading..." : "Sign In"}
             </button>
             <p className="chitChat-new-user">
               New User <span onClick={handleToggle}>Click Here</span>
@@ -148,7 +141,7 @@ const Login = () => {
               )}
             </div>
             <button disabled={loading} className="chitChat-primery-btn">
-              {loading ? "Loading" : "Register Now"}
+              {loading ? "Loading..." : "Register Now"}
             </button>
             <p className="chitChat-new-user">
               Allready User

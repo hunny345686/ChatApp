@@ -15,8 +15,9 @@ import { useUserStore } from "../../lib/userStore";
 import upload from "../../lib/upload";
 import { MdCall, MdEmojiEmotions, MdOutlineMic } from "react-icons/md";
 import { GoPaperclip } from "react-icons/go";
-import { IoIosMore, IoIosVideocam } from "react-icons/io";
+import { IoIosMore, IoIosSend, IoIosVideocam } from "react-icons/io";
 import useClickOutside from "../../customHooks/useClickOutside";
+
 const Chat = () => {
   const [chat, setChat] = useState([]);
   const [open, setOpen] = useState(false);
@@ -76,6 +77,8 @@ const Chat = () => {
       });
 
       const userIDs = [currentUser.id, user.id];
+      console.log("currentUser.id", currentUser);
+      console.log("user", user);
       userIDs.forEach(async (id) => {
         const userChatsRef = doc(db, "userchats", id);
         const userChatsSnapshot = await getDoc(userChatsRef);
@@ -128,7 +131,6 @@ const Chat = () => {
     if (!user) return;
 
     const userDocRef = doc(db, "users", currentUser.id);
-
     try {
       await updateDoc(userDocRef, {
         blocked: isReceiverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
@@ -178,22 +180,41 @@ const Chat = () => {
         {chat?.messages?.map((message) => (
           <div
             key={message?.createdAt}
-            title={message.createdAt.toDate().toLocaleString()}
             className={
               message.senderId === currentUser?.id ? "message own" : "message"
             }
           >
-            {message.img && <img src={message.img} alt="" />}
-            <div className="msgbox">
-              <div className="texts">
-                <p>{message.text}</p>
-                <span>
-                  {message.createdAt.toDate().toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
-                {message.senderId === currentUser?.id ? <span>✓✓</span> : null}
+            {message.img && <img src={message.img} alt="send img" />}
+            <div className="msgbox-container">
+              <img
+                className="user-img"
+                src={
+                  message.senderId === currentUser?.id
+                    ? currentUser.avatar
+                    : user?.avatar
+                }
+                alt="userimg"
+              />
+              <div className="msgbox">
+                <p className="name-time">
+                  <span>
+                    {message.senderId === currentUser?.id
+                      ? "You"
+                      : user?.username}
+                  </span>
+                  <span>
+                    {message.createdAt.toDate().toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </p>
+                <p className="text-msg">
+                  <span>{message.text}</span>
+                  {message.senderId === currentUser?.id ? (
+                    <span>✓✓</span>
+                  ) : null}
+                </p>
               </div>
             </div>
           </div>
@@ -209,34 +230,37 @@ const Chat = () => {
       </div>
 
       <div className="bottom">
-        <input
-          type="text"
-          placeholder={
-            isCurrentUserBlocked || isReceiverBlocked
-              ? "You cannot send a message"
-              : "Type a message..."
-          }
-          onKeyPress={handleKeyPress}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          disabled={isCurrentUserBlocked || isReceiverBlocked}
-        />
-        <div className="icons">
-          <label htmlFor="file">
-            <GoPaperclip />
-          </label>
-          <input
-            type="file"
-            id="file"
-            style={{ display: "none" }}
-            onChange={handleImg}
-          />
-          <MdOutlineMic />
-          <div className="emoji">
-            <MdEmojiEmotions onClick={() => setOpen((prev) => !prev)} />
-            <div className="picker">
-              <EmojiPicker open={open} onEmojiClick={handleEmoji} />
+        <div className="bottom-container">
+          <textarea
+            className="scrollable-input"
+            placeholder={
+              isCurrentUserBlocked || isReceiverBlocked
+                ? "You cannot send a message"
+                : "Type a message..."
+            }
+            onKeyPress={handleKeyPress}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            disabled={isCurrentUserBlocked || isReceiverBlocked}
+          ></textarea>
+          <div className="icons">
+            <label htmlFor="file">
+              <GoPaperclip />
+            </label>
+            <input
+              type="file"
+              id="file"
+              style={{ display: "none" }}
+              onChange={handleImg}
+            />
+            <MdOutlineMic />
+            <div className="emoji">
+              <MdEmojiEmotions onClick={() => setOpen((prev) => !prev)} />
+              <div className="picker">
+                <EmojiPicker open={open} onEmojiClick={handleEmoji} />
+              </div>
             </div>
+            <IoIosSend onClick={handleSend} />
           </div>
         </div>
       </div>

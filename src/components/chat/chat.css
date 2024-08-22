@@ -46,8 +46,8 @@
       gap: 16px;
       svg {
         cursor: pointer;
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         color: #fff;
       }
       img {
@@ -65,13 +65,14 @@
           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
           border-radius: 4px;
           left: -400%;
+          z-index: 1;
           li {
-            padding: 10px 34px 10px 10px;
-            white-space: nowrap;
+            padding: 8px 24px 8px 8px;
             cursor: pointer;
-            color: #3498db;
+            color: #000;
             border-bottom: 1px solid #c9c9c94f;
             border-radius: 4px;
+            font-size: 12px;
             &:hover {
               background: #3498db;
               color: #fff;
@@ -81,103 +82,153 @@
       }
     }
   }
-
   .center {
+    padding: 12px 24px;
     padding: 12px;
     overflow-y: scroll;
+    scrollbar-width: none;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    scrollbar-width: none;
-    .message {
-      .msgbox {
-        width: fit-content;
-        padding: 8px;
-        max-width: 60%;
-        background-color: #3498db;
-        border-radius: 4px;
+    gap: 20px;
+    .msgbox-container {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      .user-img {
+        width: 40px;
+        border-radius: 50%;
+        aspect-ratio: 1;
       }
-      &.own {
-        display: flex;
-        align-items: end;
-        justify-content: end;
-        flex-direction: column;
-        .msgbox {
-          align-self: flex-end;
-          background: #fff;
+      .msgbox {
+        background: #ebebeb;
+        color: #333333;
+        border-radius: 8px 8px 8px 0;
+        padding: 8px;
+        font-size: 13px;
+        position: relative;
+        width: fit-content;
+        max-width: 60%;
+        line-height: 1.6;
+        &::before {
+          content: "";
+          display: block;
+          position: absolute;
+          bottom: 0;
+          border: 18px solid transparent;
+          border-bottom-width: 0;
+          left: -24px;
+          border-right-color: #ebebeb;
+          border-right-width: 12px;
+        }
+        .name-time {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          padding-bottom: 4px;
+          span {
+            font-size: 10px;
+            &:first-child {
+              font-weight: 700;
+              font-size: 14px;
+            }
+          }
+        }
+        .text-msg {
+          display: flex;
+          flex-direction: column;
         }
       }
     }
-    .texts {
-      display: flex;
-      align-items: end;
-      gap: 8px;
-      font-size: 14px;
-      img {
-        width: 100%;
-        height: 300px;
-        border-radius: 10px;
-        object-fit: cover;
-      }
-      span {
-        font-size: 10px;
+    .message.own {
+      .msgbox-container {
+        flex-direction: row-reverse;
+        .msgbox {
+          background: #7266ba;
+          color: #fff;
+          &::before {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0;
+            border: 18px solid transparent;
+            border-bottom-width: 0;
+            right: -24px;
+            left: unset;
+            border-left-color: #7266ba;
+            border-left-width: 12px;
+          }
+          .text-msg {
+            position: relative;
+            span {
+              width: 95%;
+              word-break: break-all;
+              &:last-child {
+                font-size: 10px;
+                text-align: end;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+              }
+            }
+          }
+        }
       }
     }
   }
-
   .bottom {
     padding: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     border-top: 2px solid #ffffff42;
-    gap: 16px;
     margin-top: auto;
-    position: relative;
-
-    .icons {
+    .bottom-container {
       display: flex;
-      gap: 20px;
-      position: absolute;
-      right: 4%;
-      top: 50%;
-      transform: translateY(-50%);
-      svg {
-        cursor: pointer;
-        width: 20px;
-        height: 20px;
-        color: #fff;
-      }
-    }
-    input {
-      flex: 1;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px;
+      border-radius: 8px;
       background-color: rgba(17, 25, 40, 0.5);
-      border: none;
-      outline: none;
-      color: white;
-      padding: 12px;
-      border-radius: 4px;
-      font-size: 16px;
-      &:disabled {
-        cursor: not-allowed;
+      .icons {
+        display: flex;
+        gap: 20px;
+        svg {
+          cursor: pointer;
+          width: 20px;
+          height: 20px;
+          color: #fff;
+        }
       }
-    }
-
-    .emoji {
-      .picker {
-        position: absolute;
-        bottom: 35px;
-        right: -10%;
-        .epr-main {
-          width: 250px !important;
-          height: 270px !important;
-          background: #e0f2f1;
-          .epr_-mpla0i {
-            scrollbar-width: none;
-          }
-          .epr_-kg0voo,
-          .epr_346qu6 {
-            display: none;
+      textarea {
+        flex: 1;
+        background-color: transparent;
+        color: #fff;
+        outline: none;
+        border-radius: 4px;
+        font-size: 13px;
+        overflow-y: auto;
+        border: none;
+        resize: none;
+        scrollbar-width: none;
+        &:disabled {
+          cursor: not-allowed;
+        }
+      }
+      .emoji {
+        .picker {
+          position: absolute;
+          bottom: 35px;
+          right: -10%;
+          .epr-main {
+            width: 250px !important;
+            height: 270px !important;
+            background: #e0f2f1;
+            .epr_-mpla0i {
+              scrollbar-width: none;
+            }
+            .epr_-kg0voo,
+            .epr_346qu6 {
+              display: none;
+            }
           }
         }
       }

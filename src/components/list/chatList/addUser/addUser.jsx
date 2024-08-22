@@ -92,25 +92,21 @@ const AddUser = () => {
               onChange={(e) => setInput(e.target.value)}
             />
           </div>
-          <p className="contact-heading">Add New Contact</p>
+          <p className="contact-heading">Others Users</p>
         </>
       ) : null}
-      {user?.length > 0 ? (
-        user.map((user) => (
-          <div
-            key={user.id}
-            className="new-user"
-            onClick={() => handleAdd(user.id)}
-          >
-            <img src={user.avatar || "./avatar.png"} alt="" />
-            <span>{user.username}</span>
-          </div>
-        ))
-      ) : (
-        <div className="no-user">
-          <h2>No New User...</h2>
-        </div>
-      )}
+      {user?.length > 0
+        ? user.map((user) => (
+            <div
+              key={user.id}
+              className="new-user"
+              onClick={() => handleAdd(user.id)}
+            >
+              <img src={user.avatar || "./avatar.png"} alt="" />
+              <span>{user.username}</span>
+            </div>
+          ))
+        : null}
     </>
   );
 };

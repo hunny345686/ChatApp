@@ -4,13 +4,12 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  // apiKey: import.meta.env.VITE_API_KEY,
-  apiKey: "AIzaSyAznMXQp8NpXjNhxe-Bief-VRvSp37sIJY",
-  authDomain: "reactchatapp-9ebb9.firebaseapp.com",
-  projectId: "reactchatapp-9ebb9",
-  storageBucket: "reactchatapp-9ebb9.appspot.com",
-  messagingSenderId: "573574857761",
-  appId: "1:573574857761:web:0d3c224d6293f792888f60",
+  apiKey: "AIzaSyDbyqAIsVr78Uu09smRN4PprfnDjvOq2CA",
+  authDomain: "chitchatapp-20622.firebaseapp.com",
+  projectId: "chitchatapp-20622",
+  storageBucket: "chitchatapp-20622.appspot.com",
+  messagingSenderId: "284022097544",
+  appId: "1:284022097544:web:e220d4d3e0336a7780813d",
 };
 
 const app = initializeApp(firebaseConfig);
