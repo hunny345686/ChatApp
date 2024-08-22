@@ -70,7 +70,7 @@
       object-fit: cover;
     }
     img.seen {
-      border: 3px solid red;
+      border: 3px solid #2196f3;
     }
 
     .texts {
@@ -92,7 +92,7 @@
     }
   }
   .searchBar.newUser {
-    background-color: rgba(17, 25, 40, 0.5);
+    background-color: #0d47a154;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -114,6 +114,21 @@
       &::placeholder {
         color: white;
       }
+    }
+  }
+}
+
+.loaderContainer {
+  position: absolute;
+  inset: 0;
+  background: #000000c7;
+  z-index: 1;
+  .loader {
+    width: 20px;
+    height: 20px;
+    &::before {
+      width: 20px;
+      height: 20px;
     }
   }
 }

@@ -29,6 +29,7 @@ const Chat = () => {
   const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock } =
     useChatStore();
   const popupRef = useRef(null);
+  const emojiRef = useRef(null);
   const endRef = useRef(null);
 
   useEffect(() => {
@@ -62,6 +63,7 @@ const Chat = () => {
 
   const handleSend = async () => {
     if (text === "") return;
+    setText("");
     let imgUrl = null;
     try {
       if (img.file) {
@@ -105,8 +107,6 @@ const Chat = () => {
         file: null,
         url: "",
       });
-
-      setText("");
     }
   };
 
@@ -122,8 +122,12 @@ const Chat = () => {
   const closeDropdown = () => {
     setToggel(false);
   };
+  const closeDropdownemoji = () => {
+    setOpen(false);
+  };
 
   useClickOutside(popupRef, closeDropdown);
+  useClickOutside(emojiRef, closeDropdownemoji);
 
   const handleBlock = async () => {
     if (!user) return;
@@ -254,7 +258,7 @@ const Chat = () => {
             <MdOutlineMic />
             <div className="emoji">
               <MdEmojiEmotions onClick={() => setOpen((prev) => !prev)} />
-              <div className="picker">
+              <div className="picker" ref={emojiRef}>
                 <EmojiPicker open={open} onEmojiClick={handleEmoji} />
               </div>
             </div>
